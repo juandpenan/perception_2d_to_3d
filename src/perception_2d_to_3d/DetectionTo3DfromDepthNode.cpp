@@ -40,10 +40,10 @@ DetectionTo3DfromDepthNode::DetectionTo3DfromDepthNode()
 : Node("detection_to_3d_from_depth_node")
 {
   depth_sub_ = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
-    this, "input_depth", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
+    this, "input_depth", rclcpp::SensorDataQoS().durability_volatile().best_effort().get_rmw_qos_profile());
   detection_sub_ =
     std::make_shared<message_filters::Subscriber<vision_msgs::msg::Detection2DArray>>(
-    this, "input_detection_2d", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
+    this, "input_detection_2d", rclcpp::SensorDataQoS().durability_volatile().best_effort().get_rmw_qos_profile());
   sync_ = std::make_shared<message_filters::Synchronizer<MySyncPolicy>>(
     MySyncPolicy(10), *depth_sub_, *detection_sub_);
   sync_->registerCallback(std::bind(&DetectionTo3DfromDepthNode::callback_sync, this, _1, _2));
