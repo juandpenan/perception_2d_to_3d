@@ -49,7 +49,7 @@ DetectionTo3DfromDepthNode::DetectionTo3DfromDepthNode()
   sync_->registerCallback(std::bind(&DetectionTo3DfromDepthNode::callback_sync, this, _1, _2));
 
   info_sub_ = create_subscription<sensor_msgs::msg::CameraInfo>(
-    "camera_info", 1, std::bind(&DetectionTo3DfromDepthNode::callback_info, this, _1));
+    "camera_info", rclcpp::SensorDataQoS().durability_volatile().best_effort(), std::bind(&DetectionTo3DfromDepthNode::callback_info, this, _1));
   detection_pub_ = create_publisher<vision_msgs::msg::Detection3DArray>(
     "output_detection_3d", rclcpp::SensorDataQoS().reliable());
 }
